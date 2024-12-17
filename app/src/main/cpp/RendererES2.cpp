@@ -18,6 +18,8 @@
 
 #include "gles3jni.h"
 
+// TODO: Rewrite this Renderer implementation to render heat-diffusion simulation.
+
 static const char VERTEX_SHADER[] =
     "#version 100\n"
     "uniform mat2 scaleRot;\n"
@@ -41,33 +43,25 @@ static const char FRAGMENT_SHADER[] =
 class RendererES2 : public Renderer {
  public:
   RendererES2();
-  virtual ~RendererES2();
+  ~RendererES2() override;
   bool init();
 
  private:
-  virtual float* mapOffsetBuf();
-  virtual void unmapOffsetBuf();
-  virtual float* mapTransformBuf();
-  virtual void unmapTransformBuf();
-  virtual void draw(unsigned int numInstances);
+  void draw() override;
 
   const EGLContext mEglContext;
 
   GLuint mVB;
   GLint mPosAttrib;
-  GLint mColorAttrib;
-  GLint mScaleRotUniform;
-  GLint mOffsetUniform;
-
-  float mOffsets[2 * MAX_INSTANCES];
-  float mScaleRot[4 * MAX_INSTANCES];  // array of 2x2 column-major matrices
+  GLint mTexCoordAttrib;
 };
 
 Renderer* createES2Renderer() {
-  RendererES2* renderer = new RendererES2;
+  ALOGE("ES2 Renderer not currently supported.");
+  auto* renderer = new RendererES2;
   if (!renderer->init()) {
     delete renderer;
-    return NULL;
+    return nullptr;
   }
   return renderer;
 }
@@ -76,17 +70,13 @@ RendererES2::RendererES2()
     : mEglContext(eglGetCurrentContext()),
       mVB(0),
       mPosAttrib(-1),
-      mColorAttrib(-1),
-      mScaleRotUniform(-1),
-      mOffsetUniform(-1) {}
+      mTexCoordAttrib(-1) {}
 
 bool RendererES2::init() {
   mProgram = createProgram(VERTEX_SHADER, FRAGMENT_SHADER);
   if (!mProgram) return false;
   mPosAttrib = glGetAttribLocation(mProgram, "pos");
-  mColorAttrib = glGetAttribLocation(mProgram, "color");
-  mScaleRotUniform = glGetUniformLocation(mProgram, "scaleRot");
-  mOffsetUniform = glGetUniformLocation(mProgram, "offset");
+  mTexCoordAttrib = glGetAttribLocation(mProgram, "texCoord");
 
   glGenBuffers(1, &mVB);
   glBindBuffer(GL_ARRAY_BUFFER, mVB);
@@ -108,15 +98,7 @@ RendererES2::~RendererES2() {
   glDeleteProgram(mProgram);
 }
 
-float* RendererES2::mapOffsetBuf() { return mOffsets; }
-
-void RendererES2::unmapOffsetBuf() {}
-
-float* RendererES2::mapTransformBuf() { return mScaleRot; }
-
-void RendererES2::unmapTransformBuf() {}
-
-void RendererES2::draw(unsigned int numInstances) {
+void RendererES2::draw() {
 //  glUseProgram(mProgram);
 //
 //  glBindBuffer(GL_ARRAY_BUFFER, mVB);

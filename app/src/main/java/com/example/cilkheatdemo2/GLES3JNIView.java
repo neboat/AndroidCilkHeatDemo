@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 The Android Open Source Project
+ * Modified for Cilk heat-diffusion demo by Tao B. Schardl, December 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +21,11 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
-import androidx.core.view.MotionEventCompat;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 class GLES3JNIView extends GLSurfaceView {
-    private static final String TAG = "GLES3JNI";
     private final Renderer renderer;
-    private static final boolean DEBUG = true;
 
     public GLES3JNIView(Context context) {
         super(context);
