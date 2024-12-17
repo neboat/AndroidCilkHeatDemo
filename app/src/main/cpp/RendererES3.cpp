@@ -126,6 +126,4 @@ void RendererES3::draw() {
   // Draw the quad
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
   glBindVertexArray(0);
-
-  // TODO: Do we need to unbind the texture?
 }
