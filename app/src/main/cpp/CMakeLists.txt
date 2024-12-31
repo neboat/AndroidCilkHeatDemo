@@ -24,7 +24,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopencilk -femulated-tls -fno-rtti -fno-exceptions -Wall")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og")
 include_directories(${CMAKE_SOURCE_DIR}/opencilk/include)
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fopencilk -L${CMAKE_SOURCE_DIR}/../jniLibs/arm64-v8a -static-libopencilk -femulated-tls -v")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fopencilk -L${CMAKE_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI} -v")
 
 if (${ANDROID_PLATFORM_LEVEL} LESS 12)
   message(FATAL_ERROR "OpenGL 2 is not supported before API level 11 \
